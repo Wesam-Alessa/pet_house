@@ -9,6 +9,7 @@ import 'package:animal_house/presintaions/providers/user_provider.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -338,17 +339,32 @@ class _AdDetailsScreenState extends State<AdDetailsScreen> {
                           width: 10,
                         ),
                         Expanded(
-                          child: Container(
-                            height: 60,
-                            decoration: BoxDecoration(
-                                color: Theme.of(context).primaryColor,
-                                borderRadius: BorderRadius.circular(20)),
-                            child: const Center(
-                                child: Text(
-                              'Adoption',
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 24),
-                            )),
+                          child: GestureDetector(
+                            onTap: () => callNumber(
+                                number: state.productModelDetails!.contact),
+                            child: Container(
+                              height: 60,
+                              decoration: BoxDecoration(
+                                  color: Theme.of(context).primaryColor,
+                                  borderRadius: BorderRadius.circular(20)),
+                              child: Center(
+                                  child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  const Icon(
+                                    Icons.call,
+                                    color: Colors.white,
+                                  ),
+                                  Text(
+                                    'Call for Adoption',
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: Dimensions.font16),
+                                  ),
+                                ],
+                              )),
+                            ),
                           ),
                         )
                       ],
@@ -396,8 +412,6 @@ class _AdDetailsScreenState extends State<AdDetailsScreen> {
                             }).toList(),
                           ),
                         ),
-                        // IconButton(
-                        //     icon: const Icon(Icons.share), onPressed: () {})
                       ],
                     ),
                   ),
@@ -408,5 +422,9 @@ class _AdDetailsScreenState extends State<AdDetailsScreen> {
         },
       ),
     );
+  }
+
+  callNumber({required String number}) async {
+    await FlutterPhoneDirectCaller.callNumber(number) ?? false;
   }
 }

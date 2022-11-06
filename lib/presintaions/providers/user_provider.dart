@@ -170,7 +170,6 @@ class UserProvider with ChangeNotifier {
     }
     myFavourites = await _favouritesServices.getMyFavourites(
         items: _userModel.favourites, userId: _userModel.id);
-    log("heeeeeeer ${myFavourites.length}");
-    notifyListeners();
+     notifyListeners();
   }
 }
