@@ -6,13 +6,13 @@ class Message {
     required this.isMe,
   });
 
-  int id;
+  String id;
   String? text;
   String createdAt;
   bool isMe;
 
   Message copyWith({
-  required int id,
+  required String id,
   String? text,
   String? type,
   String? attachment,
@@ -28,7 +28,7 @@ class Message {
     );
 
   factory Message.fromJson(Map<String, dynamic> json) => Message(
-    id: json["id"]??0,
+    id: json["id"]??"",
     text: json["text"],
     isMe: json["isMe"],
     createdAt: json["createdAt"],

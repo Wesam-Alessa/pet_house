@@ -1,6 +1,8 @@
 import 'package:animal_house/domain/entities/conversation/message.dart';
+import 'package:animal_house/presintaions/providers/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 class MessageWidget extends StatelessWidget {
   final Message message;
@@ -10,7 +12,8 @@ class MessageWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    if (message.isMe) {
+    if (message.id ==
+        Provider.of<UserProvider>(context, listen: false).getUserModel.id) {
       return Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [

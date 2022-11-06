@@ -20,8 +20,8 @@ class UserModel {
   final String phone;
   final String picture;
   final String address;
-  List<FavModel> favourites;
-  List<ProductModel> myProducts;
+  List<dynamic> favourites;
+  List<dynamic> myProducts;
 
   UserModel({
     required this.id,
@@ -41,10 +41,12 @@ class UserModel {
         phone: json[PHONE],
         picture: json[PICTURE],
         address: json[ADDRESS],
-        favourites: List<FavModel>.from(
-            json[FAVOURITES].map((e) => FavModel.fromMap(e))),
-        myProducts: List<ProductModel>.from(
-            json[MYPRODUCTS].map((e) => ProductModel.fromMap(e, json[ID]))),
+        favourites: json[FAVOURITES]??[],
+        // List<ProductModel>.from(
+        //     json[FAVOURITES].map((e) => ProductModel.fromMap(e,json[ID]))),
+        myProducts:json[MYPRODUCTS]??[],
+        //  List<ProductModel>.from(
+        //     json[MYPRODUCTS].map((e) => ProductModel.fromMap(e, json[ID]))),
       );
 
   Map<String, dynamic> toJson() {

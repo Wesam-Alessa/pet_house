@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:animal_house/domain/entities/conversation/chat.dart';
+import 'package:animal_house/domain/entities/product.dart';
 import 'package:animal_house/domain/entities/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -12,17 +13,98 @@ class UserServices {
   UserModel? user;
   List<ChatModel> chats = [];
 
-  Future<void> addMessage(
-      {required String userID, required ChatModel chatModel}) async {
-    await _fireStore
+  Future<void> addFriendMessage(
+      {required bool exist,
+      required ChatModel model,
+      required UserModel userModel}) async {
+    if (exist) {
+      ChatModel freindChatModel = ChatModel(
+          id: userModel.id,
+          user: userModel,
+          messages: model.messages,
+          unReadCount: model.unReadCount,
+          lastMessageAt: model.lastMessageAt);
+      await _fireStore
+          .collection(ref)
+          .doc(model.id)
+          .collection('chats')
+          .doc(userModel.id)
+          .update(freindChatModel.toJson());
+    } else {
+      ChatModel freindChatModel = ChatModel(
+          id: userModel.id,
+          user: userModel,
+          messages: model.messages,
+          unReadCount: model.unReadCount,
+          lastMessageAt: model.lastMessageAt);
+      await _fireStore
+          .collection(ref)
+          .doc(model.id)
+          .collection('chats')
+          .doc(userModel.id)
+          .set(freindChatModel.toJson());
+    }
+  }
+
+  Future<void> addMessage({
+    required UserModel userModel,
+    required ChatModel myModel,
+  }) async {
+    await getChats(userID: userModel.id);
+    bool exist = false;
+    for (var element in chats) {
+      if (element.id == myModel.id) {
+        log("exist:= ${element.id}");
+        exist = true;
+      }
+    }
+    // ChatModel myChat = ChatModel(
+    //     id: userID,
+    //     user: chatModel.user,
+    //     messages: chatModel.messages,
+    //     unReadCount: chatModel.unReadCount,
+    //     lastMessageAt: chatModel.lastMessageAt);
+
+    if (exist) {
+      await _fireStore
+          .collection(ref)
+          .doc(userModel.id)
+          .collection('chats')
+          .doc(myModel.id)
+          .update(myModel.toJson())
+          .then((value) {
+        addFriendMessage(exist: exist, model: myModel, userModel: userModel);
+      });
+    } else {
+      await _fireStore
+          .collection(ref)
+          .doc(userModel.id)
+          .collection('chats')
+          .doc(myModel.id)
+          .set(myModel.toJson())
+          .then((value) {
+        addFriendMessage(exist: exist, model: myModel, userModel: userModel);
+      });
+    }
+  }
+
+  Future<bool> existChat(
+      {required String userID, required String friendID}) async {
+    final result = await _fireStore
         .collection(ref)
         .doc(userID)
         .collection('chats')
-        .doc(chatModel.id)
-        .update(chatModel.toJson());
+        .where('id', isEqualTo: friendID)
+        .get();
+    if (result.docs.isNotEmpty) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   Future<List<ChatModel>> getChats({required String userID}) async {
+    chats.clear();
     await _fireStore
         .collection(ref)
         .doc(userID)
@@ -78,29 +160,17 @@ class UserServices {
     return user;
   }
 
-  // void addToCart({required String userId, required CartModel cartItemFetcher}) {
-  //   _fireStore.collection(ref).doc(userId).update({
-  //     "cart": FieldValue.arrayUnion([cartItemFetcher.toMap()])
-  //   });
-  // }
-
-  void addToFavourites(
+  Future<void> addToFavourites(
       {required String userId, required String favItemId}) async {
     await _fireStore.collection(ref).doc(userId).update({
       "favourites": FieldValue.arrayUnion([favItemId])
     });
   }
 
-  // void removeFromCart(
-  //     {required String userId, required CartModel cartItemFetcher}) {
-  //   _fireStore.collection(ref).doc(userId).update({
-  //     "cart": FieldValue.arrayRemove([cartItemFetcher.toMap()])
-  //   });
-  // }
-
-  void removeFromFavourites(
-      {required String userId, required String favItemId}) {
-    _fireStore.collection(ref).doc(userId).update({
+  Future<void> removeFromFavourites(
+      {required String userId, required String favItemId})async{
+    log(favItemId);
+    await _fireStore.collection(ref).doc(userId).update({
       "favourites": FieldValue.arrayRemove([favItemId])
     });
   }

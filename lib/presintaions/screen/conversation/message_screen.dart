@@ -7,7 +7,6 @@ import 'package:animal_house/presintaions/common/conversation/message_widget.dar
 import 'package:animal_house/presintaions/providers/user_provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:simple_animations/simple_animations.dart';
 
@@ -33,7 +32,6 @@ class _MessageScreenState extends State<MessageScreen> with AnimationMixin {
   void initState() {
     slideInputController = createController()
       ..duration = const Duration(milliseconds: 500);
-
     slideInputAnimation = Tween<Offset>(
       begin: const Offset(0, 0),
       end: const Offset(-2, 0),
@@ -46,24 +44,27 @@ class _MessageScreenState extends State<MessageScreen> with AnimationMixin {
   }
 
   addToMessages(String text) {
-    chat.messages.insert(
+    ChatModel myModel = chat;
+    myModel.messages.insert(
         0,
         Message(
-          id: chat.messages.length + 1,
+          id: Provider.of<UserProvider>(context, listen: false).getUserModel.id,
           text: text,
           createdAt: DateTime.now().toString(),
           isMe: true,
         ));
-    log(chat.messages.length.toString());
+    myModel.lastMessageAt = chat.messages[0].createdAt;
+    log("CHAT 01:= ${chat.messages[0].id.toString()}");
+    log("myModel 01:= ${myModel.messages[0].id.toString()}");
+
     Provider.of<UserProvider>(context, listen: false)
-        .addMessage(chatModel: chat);
+        .addMessage(myModel: myModel);
   }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     chat = ModalRoute.of(context)!.settings.arguments as ChatModel;
-
     return Scaffold(
       backgroundColor: ColorConstants.lightBackgroundColor,
       appBar: AppBar(
@@ -99,8 +100,16 @@ class _MessageScreenState extends State<MessageScreen> with AnimationMixin {
               .doc(chat.id)
               .snapshots(),
           builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
             if (snapshot.hasData) {
-              chat = ChatModel.fromJson(snapshot.data!.data()!, chat.user);
+              if (snapshot.data!.data() != null) {
+                log("DATA := ${snapshot.data!.data()!.toString()}");
+                chat = ChatModel.fromJson(snapshot.data!.data()!, chat.user);
+              }
               return Stack(
                 fit: StackFit.expand,
                 children: [
@@ -216,17 +225,6 @@ class _MessageScreenState extends State<MessageScreen> with AnimationMixin {
                                                               .grey.shade300),
                                                     ),
                                                   ),
-                                                  onChanged: (value) {
-                                                    if (value.isNotEmpty) {
-                                                      setState(() {
-                                                        isVisible = true;
-                                                      });
-                                                    } else {
-                                                      setState(() {
-                                                        isVisible = false;
-                                                      });
-                                                    }
-                                                  },
                                                 ),
                                               ),
                                             ),
@@ -236,12 +234,8 @@ class _MessageScreenState extends State<MessageScreen> with AnimationMixin {
                                     ),
                                     IconButton(
                                       splashRadius: 20,
-                                      icon: Icon(
-                                        Icons.send,
-                                        color: isVisible
-                                            ? Colors.blue
-                                            : Colors.grey.shade700,
-                                      ),
+                                      icon: const Icon(Icons.send,
+                                          color: Colors.blue),
                                       onPressed: () {
                                         if (textController.text.isNotEmpty) {
                                           addToMessages(textController.text);
