@@ -10,7 +10,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'ad_details_screen.dart';
+import 'post_details_screen.dart';
 
 List<CategoryModel> categories = [
   CategoryModel(name: 'Cats', imageUrl: "assets/cat.png", id: '1'),
@@ -21,100 +21,19 @@ List<CategoryModel> categories = [
   CategoryModel(name: 'Horses', imageUrl: "assets/horse.png", id: '6'),
 ];
 
-// List<ProductModel> products = [
-//   ProductModel(
-//     type: "Abyssinian cat",
-//     name: 'cat for adoption',
-//     id: '1',
-//     userId: "XKgoG6tPaRZ6Gd4M71E8rTLoCSw1",
-//     category: "category",
-//     quantity: "quantity",
-//     price: 110,
-//     ageYears: 2,
-//     ageMounth: 6,
-//     pictures: [
-//       "https://media.istockphoto.com/photos/black-cat-sticking-out-tongue-funny-portrait-picture-id1361956153?k=20&m=1361956153&s=612x612&w=0&h=Xw9pQUtam5OTfYB_jBmLVDIpXRx3zX4JkN8s6uW9TUY=",
-//     ],
-//     description: "description",
-//     address: "Amman_jordan",
-//     dateTime: DateTime.now().toString(),
-//     contact: "123456789",
-//     gender: "male",
-//   ),
-//   ProductModel(
-//     type: "Pol dog",
-//     ageYears: 2,
-//     ageMounth: 6,
-//     name: 'dog for adoption',
-//     id: '2',
-//     userId: "",
-//     category: "category",
-//     quantity: "quantity",
-//     price: 0,
-//     pictures: [
-//       "https://media.istockphoto.com/photos/cute-dog-and-cat-walking-on-a-sunny-summer-day-on-green-grass-picture-id1338924954?k=20&m=1338924954&s=612x612&w=0&h=QI5-JmUuZt-tueyvy3qs3Wx2pTEz-YgN16J-7jYcYFo="
-//     ],
-//     description: "description",
-//     address: "Amman_jordan",
-//     dateTime: DateTime.now().toString(),
-//     contact: "123456789",
-//     gender: "female",
-//   ),
-//   ProductModel(
-//     type: "german dog",
-//     ageYears: 2,
-//     ageMounth: 6,
-//     name: 'dog for adoption',
-//     id: '3',
-//     userId: "",
-//     category: "category",
-//     quantity: "quantity",
-//     price: 0,
-//     pictures: [
-//       "https://media.istockphoto.com/photos/cute-dog-and-cat-walking-on-a-sunny-summer-day-on-green-grass-picture-id1338924954?k=20&m=1338924954&s=612x612&w=0&h=QI5-JmUuZt-tueyvy3qs3Wx2pTEz-YgN16J-7jYcYFo="
-//     ],
-//     description: "description",
-//     address: "Amman_jordan",
-//     dateTime: DateTime.now().toString(),
-//     contact: "123456789",
-//     gender: "male",
-//   ),
-//   ProductModel(
-//     type: "rot wailer dog",
-//     ageYears: 2,
-//     ageMounth: 6,
-//     name: 'dog for adoption',
-//     id: '4',
-//     userId: "",
-//     category: "category",
-//     quantity: "quantity",
-//     price: 0,
-//     pictures: [
-//       "https://media.istockphoto.com/photos/cute-dog-and-cat-walking-on-a-sunny-summer-day-on-green-grass-picture-id1338924954?k=20&m=1338924954&s=612x612&w=0&h=QI5-JmUuZt-tueyvy3qs3Wx2pTEz-YgN16J-7jYcYFo="
-//     ],
-//     description: "description",
-//     address: "Amman_jordan",
-//     dateTime: DateTime.now().toString(),
-//     contact: "123456789",
-//     gender: "male",
-//   ),
-// ];
-
-class ChoosPlanScreen extends StatefulWidget {
-  const ChoosPlanScreen({Key? key}) : super(key: key);
+class MainScreen extends StatefulWidget {
+  const MainScreen({Key? key}) : super(key: key);
 
   @override
-  State<ChoosPlanScreen> createState() => _ChoosPlanScreenState();
+  State<MainScreen> createState() => _MainScreenState();
 }
 
-class _ChoosPlanScreenState extends State<ChoosPlanScreen> {
+class _MainScreenState extends State<MainScreen> {
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
       GlobalKey<RefreshIndicatorState>();
-
   double xOffset = 0;
   double yOffset = 0;
   double scaleFactor = 1;
-
   bool isDrawerOpen = false;
 
   @override
@@ -182,29 +101,36 @@ class _ChoosPlanScreenState extends State<ChoosPlanScreen> {
                                     backgroundImage: CachedNetworkImageProvider(
                                         user.getUserModel.picture),
                                   )
-                                : const CircleAvatar();
+                                : CircleAvatar(
+                                    radius: Dimensions.radius20,
+                                    backgroundImage:
+                                        const AssetImage("assets/profile.png"),
+                                  );
                           },
                         )
                       ],
                     ),
                   ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 15),
-                    margin: const EdgeInsets.symmetric(
-                        vertical: 15, horizontal: 20),
-                    decoration: BoxDecoration(
-                        boxShadow: shadowList,
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(20)),
-                    child: Row(
-                      children: [
-                        const Icon(Icons.search),
-                        SizedBox(width: Dimensions.screenWidth * 0.18),
-                        const Text(
-                          'Search pet to adopt',
-                        ),
-                      ],
+                  GestureDetector(
+                    onTap: () => Navigator.pushNamed(context, SEARCH_SCREEN),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 15),
+                      margin: const EdgeInsets.symmetric(
+                          vertical: 15, horizontal: 20),
+                      decoration: BoxDecoration(
+                          boxShadow: shadowList,
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(20)),
+                      child: Row(
+                        children: [
+                          const Icon(Icons.search),
+                          SizedBox(width: Dimensions.screenWidth * 0.18),
+                          const Text(
+                            'Search pet to adopt or buy',
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                   SizedBox(

@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:animal_house/core/error/show_custom_snackbar.dart';
 import 'package:animal_house/data/favourite_service.dart';
@@ -19,7 +20,6 @@ class UserProvider with ChangeNotifier {
   final FavouritesServices _favouritesServices = FavouritesServices();
   bool loading = false;
   List<ProductModel> myFavourites = [];
-  List<ProductModel> myProducts = [];
   List<ChatModel> chats = [];
 
   UserModel get getUserModel => _userModel;
@@ -38,6 +38,14 @@ class UserProvider with ChangeNotifier {
     if (FirebaseAuth.instance.currentUser != null) {
       getUserData().then((value) => getFavourites());
     }
+  }
+
+  Future<void> getUserData() async {
+    String id = FirebaseAuth.instance.currentUser!.uid;
+    await _userServices.getUserById(id).then((value) {
+      _userModel = value;
+      notifyListeners();
+    });
   }
 
   ChatModel existChat({required String frindId}) {
@@ -75,13 +83,6 @@ class UserProvider with ChangeNotifier {
   Future<void> getUserProduct(String id) async {
     userProduct = await _userServices.getUserById(id);
     log(userProduct!.name);
-    notifyListeners();
-  }
-
-  Future<void> getUserData() async {
-    String id = FirebaseAuth.instance.currentUser!.uid;
-    _userModel = await _userServices.getUserById(id);
-    log(_userModel.name);
     notifyListeners();
   }
 
@@ -154,7 +155,7 @@ class UserProvider with ChangeNotifier {
     try {
       await _userServices.removeFromFavourites(
           userId: _userModel.id, favItemId: favItemId);
-     await getUserData();
+      await getUserData();
       myFavourites.remove(
           myFavourites.firstWhere((element) => element.id == favItemId));
       notifyListeners();
@@ -170,6 +171,38 @@ class UserProvider with ChangeNotifier {
     }
     myFavourites = await _favouritesServices.getMyFavourites(
         items: _userModel.favourites, userId: _userModel.id);
-     notifyListeners();
+    notifyListeners();
+  }
+
+  Future<void> updateUserImage(File image, BuildContext context) async {
+    if (_userModel.id.isEmpty) {
+      await getUserData();
+    }
+    await _userServices
+        .updateUserImage(image: image, userId: _userModel.id)
+        .then((value) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(MySnackBars.successSnackBar("upload successfully"));
+    }).catchError((e) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(MySnackBars.failureSnackBar("Update failed "));
+    });
+    notifyListeners();
+  }
+
+  Future<void> updateUserName(String newName, BuildContext context) async {
+    if (_userModel.id.isEmpty) {
+      await getUserData();
+    }
+    await _userServices
+        .updateUserName(newName: newName, userId: _userModel.id)
+        .then((value) async {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(MySnackBars.successSnackBar("Update successfully"));
+    }).catchError((e) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(MySnackBars.failureSnackBar("Update failed "));
+    });
+    notifyListeners();
   }
 }

@@ -13,11 +13,11 @@ import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
-class AdDetailsScreen extends StatefulWidget {
-  const AdDetailsScreen({Key? key}) : super(key: key);
+class PostDetailsScreen extends StatefulWidget {
+  const PostDetailsScreen({Key? key}) : super(key: key);
 
   @override
-  State<AdDetailsScreen> createState() => _AdDetailsScreenState();
+  State<PostDetailsScreen> createState() => _PostDetailsScreenState();
 }
 
 Color primaryGreen = const Color(0xff416d6d);
@@ -26,7 +26,7 @@ List<BoxShadow> shadowList = [
       color: Colors.grey.shade300, blurRadius: 30, offset: const Offset(0, 10))
 ];
 
-class _AdDetailsScreenState extends State<AdDetailsScreen> {
+class _PostDetailsScreenState extends State<PostDetailsScreen> {
   final CarouselController _controller = CarouselController();
   int _current = 0;
   bool exist = false;
@@ -53,131 +53,148 @@ class _AdDetailsScreenState extends State<AdDetailsScreen> {
                     height: Dimensions.screenHeight / 3,
                     width: Dimensions.screenWidth,
                     padding: const EdgeInsets.all(10.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Consumer<UserProvider>(
-                          builder: (context, userProvider, _) {
-                            return userProvider.userProduct != null
-                                ? SizedBox(
-                                    height: Dimensions.height10 * 5,
-                                    child: Row(
-                                      children: [
-                                        CircleAvatar(
-                                          radius: Dimensions.radius25,
-                                          backgroundImage:
-                                              CachedNetworkImageProvider(
-                                                  userProvider
-                                                      .userProduct!.picture),
-                                        ),
-                                        SizedBox(width: Dimensions.width10 / 2),
-                                        Flexible(
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceEvenly,
-                                            children: [
-                                              Row(
-                                                children: [
-                                                  Text(
+                    child: SingleChildScrollView(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Consumer<UserProvider>(
+                            builder: (context, userProvider, _) {
+                              return userProvider.userProduct != null
+                                  ? SizedBox(
+                                      height: Dimensions.height10 * 5,
+                                      child: Row(
+                                        children: [
+                                          CircleAvatar(
+                                            radius: Dimensions.radius25,
+                                            backgroundImage:
+                                                CachedNetworkImageProvider(
                                                     userProvider
-                                                        .userProduct!.name,
-                                                    style: TextStyles
-                                                        .enjoyTextStyle
-                                                        .copyWith(
-                                                            color:
-                                                                Colors.black),
-                                                  ),
-                                                  const Spacer(),
-                                                  Text(
-                                                    DateFormat('MMM d, h:mm a')
-                                                        .format(DateTime.parse(state
-                                                            .productModelDetails!
-                                                            .dateTime)),
-                                                    style: TextStyles
-                                                        .cardSubTitleTextStyle2
-                                                        .copyWith(
-                                                            color: Colors
-                                                                .grey.shade500),
-                                                  ),
-                                                ],
-                                              ),
-                                              Row(
-                                                children: [
-                                                  Text(
-                                                    "Owner",
-                                                    style: TextStyles
-                                                        .cardSubTitleTextStyle2
-                                                        .copyWith(
-                                                      color:
-                                                          Colors.grey.shade500,
-                                                    ),
-                                                  ),
-                                                  const Spacer(),
-                                                  if (userProvider
-                                                          .userProduct!.id !=
-                                                      userProvider
-                                                          .getUserModel.id)
-                                                    GestureDetector(
-                                                      onTap: () {
-                                                        var chat = Provider.of<
-                                                                    UserProvider>(
-                                                                context,
-                                                                listen: false)
-                                                            .existChat(
-                                                                frindId:
-                                                                    userProvider
-                                                                        .userProduct!
-                                                                        .id);
-
-                                                        chat.messages = chat
-                                                            .messages.reversed
-                                                            .toList();
-
-                                                        Navigator.pushNamed(
-                                                            context,
-                                                            MESSAGE_SCREEN,
-                                                            arguments: chat);
-                                                      },
-                                                      child: Icon(
-                                                        Icons.chat,
-                                                        color: Theme.of(context)
-                                                            .primaryColor,
-                                                      ),
-                                                    )
-                                                ],
-                                              ),
-                                            ],
+                                                        .userProduct!.picture),
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                                  )
-                                : Container();
-                          },
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 10),
-                          child: Text(
-                            'Description',
-                            style: TextStyles.cardSubTitleTextStyle2
-                                .copyWith(color: Colors.black),
+                                          SizedBox(
+                                              width: Dimensions.width10 / 2),
+                                          Flexible(
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceEvenly,
+                                              children: [
+                                                Row(
+                                                  children: [
+                                                    Text(
+                                                      userProvider
+                                                          .userProduct!.name,
+                                                      style: TextStyles
+                                                          .enjoyTextStyle
+                                                          .copyWith(
+                                                              color:
+                                                                  Colors.black),
+                                                    ),
+                                                    const Spacer(),
+                                                    Text(
+                                                      DateFormat(
+                                                              'MMM d, h:mm a')
+                                                          .format(DateTime
+                                                              .parse(state
+                                                                  .productModelDetails!
+                                                                  .dateTime)),
+                                                      style: TextStyles
+                                                          .cardSubTitleTextStyle2
+                                                          .copyWith(
+                                                              color: Colors.grey
+                                                                  .shade500),
+                                                    ),
+                                                  ],
+                                                ),
+                                                Row(
+                                                  children: [
+                                                    Text(
+                                                      "Owner",
+                                                      style: TextStyles
+                                                          .cardSubTitleTextStyle2
+                                                          .copyWith(
+                                                        color: Colors
+                                                            .grey.shade500,
+                                                      ),
+                                                    ),
+                                                    const Spacer(),
+                                                    if (userProvider
+                                                            .userProduct!.id !=
+                                                        userProvider
+                                                            .getUserModel.id)
+                                                      GestureDetector(
+                                                        onTap: () {
+                                                          var chat = Provider
+                                                                  .of<UserProvider>(
+                                                                      context,
+                                                                      listen:
+                                                                          false)
+                                                              .existChat(
+                                                                  frindId:
+                                                                      userProvider
+                                                                          .userProduct!
+                                                                          .id);
+
+                                                          chat.messages = chat
+                                                              .messages.reversed
+                                                              .toList();
+
+                                                          Navigator.pushNamed(
+                                                              context,
+                                                              MESSAGE_SCREEN,
+                                                              arguments: chat);
+                                                        },
+                                                        child: Icon(
+                                                          Icons.chat,
+                                                          color:
+                                                              Theme.of(context)
+                                                                  .primaryColor,
+                                                        ),
+                                                      )
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    )
+                                  : Container();
+                            },
                           ),
-                        ),
-                        Container(
-                          height: Dimensions.screenHeight / 5.5,
-                          padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                          child: SingleChildScrollView(
-                            child: RichText(
-                              text: TextSpan(
-                                  text: state.productModelDetails!.description,
-                                  style: TextStyles.cardSubTitleTextStyle2
-                                      .copyWith(color: Colors.grey.shade500)),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 10),
+                            child: Text(
+                              'Quantity : ${state.productModelDetails!.quantity}',
+                              style: TextStyles.cardSubTitleTextStyle2
+                                  .copyWith(color: Colors.black),
                             ),
                           ),
-                        ),
-                      ],
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 10),
+                            child: Text(
+                              'Description',
+                              style: TextStyles.cardSubTitleTextStyle2
+                                  .copyWith(color: Colors.black),
+                            ),
+                          ),
+                          Container(
+                            height: Dimensions.screenHeight / 5.5,
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 10.0),
+                            child: SingleChildScrollView(
+                              child: RichText(
+                                text: TextSpan(
+                                    text:
+                                        state.productModelDetails!.description,
+                                    style: TextStyles.cardSubTitleTextStyle2
+                                        .copyWith(color: Colors.grey.shade500)),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -245,17 +262,28 @@ class _AdDetailsScreenState extends State<AdDetailsScreen> {
                               state.productModelDetails!.gender == "male"
                                   ? Icons.male
                                   : Icons.female,
-                              color: Colors.grey,
+                              color: Theme.of(context).primaryColor,
+                              size: 22,
                             )
                           ],
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(
-                              state.productModelDetails!.type,
-                              style: TextStyles.cardSubTitleTextStyle2
-                                  .copyWith(color: Colors.grey.shade500),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Icon(
+                                  Icons.merge_type,
+                                  color: Theme.of(context).primaryColor,
+                                  size: 18,
+                                ),
+                                Text(
+                                  state.productModelDetails!.type,
+                                  style: TextStyles.cardSubTitleTextStyle2
+                                      .copyWith(color: Colors.grey.shade500),
+                                ),
+                              ],
                             ),
                             Text(
                               state.productModelDetails!.ageYears != 0 &&
@@ -357,7 +385,9 @@ class _AdDetailsScreenState extends State<AdDetailsScreen> {
                                     color: Colors.white,
                                   ),
                                   Text(
-                                    'Call for Adoption',
+                                    state.productModelDetails!.price == 0
+                                        ? 'Call for Adoption'
+                                        : 'Call to Buy',
                                     style: TextStyle(
                                         color: Colors.white,
                                         fontSize: Dimensions.font16),

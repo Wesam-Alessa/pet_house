@@ -14,7 +14,6 @@ List<Map> drawerItems = [
     'title': 'Adoption',
     'onTap': HOME_SCREEN,
   },
-  //{'icon': Icons.mail, 'title': 'Donation', 'onTap': HOME_SCREEN},
   {
     'icon': FontAwesomeIcons.plus,
     'title': 'Add pet',
@@ -25,7 +24,7 @@ List<Map> drawerItems = [
   {
     'icon': FontAwesomeIcons.userLarge,
     'title': 'Profile',
-    'onTap': HOME_SCREEN
+    'onTap': PROFILE_SCREEN
   },
 ];
 
@@ -50,11 +49,17 @@ class _DrawerScreenState extends State<DrawerScreen> {
               return user.getUserModel.id.isNotEmpty
                   ? Row(
                       children: [
-                        CircleAvatar(
-                          radius: Dimensions.radius20,
-                          backgroundImage: CachedNetworkImageProvider(
-                              user.getUserModel.picture),
-                        ),
+                        user.getUserModel.picture.isNotEmpty
+                            ? CircleAvatar(
+                                radius: Dimensions.radius20,
+                                backgroundImage: CachedNetworkImageProvider(
+                                    user.getUserModel.picture),
+                              )
+                            : CircleAvatar(
+                                radius: Dimensions.radius20,
+                                backgroundImage:
+                                    const AssetImage("assets/profile.png"),
+                              ),
                         const SizedBox(
                           width: 10,
                         ),
@@ -115,23 +120,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
           Row(
             children: [
               const Icon(
-                Icons.settings,
-                color: Colors.white,
-              ),
-              const SizedBox(
-                width: 10,
-              ),
-              const Text(
-                'Settings',
-                style:
-                    TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(
-                width: 10,
-              ),
-              Container(
-                width: 2,
-                height: 20,
+                Icons.logout_outlined,
                 color: Colors.white,
               ),
               const SizedBox(

@@ -61,7 +61,7 @@ class ProductModel {
       userId: map['userId'] as String,
       category: map['category'] as String,
       quantity: map['quantity'] as String,
-      price: map['price'] as double,
+      price: double.parse(map['price'].toString()),
       ageYears: map["age_years"] as int,
       ageMounth: map['age_mounth'] as int,
       pictures: List<dynamic>.from((map['pictures'] as List<dynamic>)),

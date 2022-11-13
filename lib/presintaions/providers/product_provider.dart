@@ -12,15 +12,6 @@ import 'package:flutter/material.dart';
 class ProductProvider with ChangeNotifier {
   final ProductsService _productServices = ProductsService();
   List<ProductModel> products = [];
-  List<ProductModel> productsFeatured = [];
-  List<ProductModel> seeds = [];
-  List<ProductModel> trees = [];
-  List<ProductModel> farmTools = [];
-  List<ProductModel> gardenTools = [];
-  List<ProductModel> landForRent = [];
-  List<ProductModel> insecticide = [];
-  List<ProductModel> agricultureDesigns = [];
-  List<ProductModel> agricultureWorkers = [];
   List<ProductModel> productsSearched = [];
   List<ProductModel> myProducts = [];
   List<CategoryModel> categories = [];
@@ -50,28 +41,7 @@ class ProductProvider with ChangeNotifier {
     return myProducts;
   }
 
-  // List<ProductModel> getSimilarProducts(String productCategory) {
-  //   List<ProductModel> p = [];
-  //   switch (productCategory) {
-  //     case 'Seeds':
-  //       return p = seeds;
-  //     case 'Trees':
-  //       return p = trees;
-  //     case 'Farm Tools':
-  //       return p = farmTools;
-  //     case 'Garden Tools':
-  //       return p = gardenTools;
-  //     case 'Land For Rent':
-  //       return p = landForRent;
-  //     case 'insecticide':
-  //       return p = insecticide;
-  //     case 'Agriculture Design':
-  //       return p = agricultureDesigns;
-  //     case 'Agriculture Workers':
-  //       return p = agricultureWorkers;
-  //   }
-  //   return p;
-  // }
+   
 
   Future<void> getCategories(context) async {
     categories = await _productServices.getCategories(context: context);
@@ -79,15 +49,13 @@ class ProductProvider with ChangeNotifier {
   }
 
   Future<void> search({required String productName}) async {
+    
     productsSearched =
         _productServices.searchProducts(productName: productName);
     notifyListeners();
   }
 
-  // Future<void> uploadProducts({required ProductModel product}) async {
-  //   await uploadProduct(product: product);
-  //   notifyListeners();
-  // }
+ 
 
   Future<List<String>> uploadFiles(List<File> images, String userId) async {
     var imageUrls =
@@ -136,7 +104,6 @@ class ProductProvider with ChangeNotifier {
           }).then((value) {
             ScaffoldMessenger.of(context).showSnackBar(
                 MySnackBars.successSnackBar("upload successfully "));
-            Navigator.pop(context);
           }).catchError((onError) {
             products.remove(product);
           });
@@ -150,6 +117,22 @@ class ProductProvider with ChangeNotifier {
           .showSnackBar(MySnackBars.failureSnackBar(e.toString()));
     }
     loading = false;
+    notifyListeners();
+  }
+
+  Future<void> deletePost(
+    String postID,
+    BuildContext context,
+  ) async {
+    await _productServices.deletePost(postID).then((value) {
+      if (true) {
+        myProducts.remove(myProducts.firstWhere(
+          (element) => element.id == postID,
+        ));
+        
+        loadProducts(context: context);
+      }
+    });
     notifyListeners();
   }
 }

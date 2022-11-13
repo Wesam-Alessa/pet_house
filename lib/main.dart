@@ -3,7 +3,7 @@
 import 'package:animal_house/presintaions/providers/app_provider.dart';
 import 'package:animal_house/presintaions/providers/product_provider.dart';
 import 'package:animal_house/presintaions/providers/user_provider.dart';
-import 'package:animal_house/presintaions/screen/ad_details_screen.dart';
+import 'package:animal_house/presintaions/screen/post_details_screen.dart';
 import 'package:animal_house/presintaions/screen/add_new_pet_screen.dart';
 import 'package:animal_house/presintaions/screen/auth/login_screen.dart';
 import 'package:animal_house/presintaions/screen/auth/signup_screen.dart';
@@ -12,19 +12,19 @@ import 'package:animal_house/presintaions/screen/conversation/chat_screen.dart';
 import 'package:animal_house/presintaions/screen/conversation/message_screen.dart';
 import 'package:animal_house/presintaions/screen/favorite_screen.dart';
 import 'package:animal_house/presintaions/screen/home_screen.dart';
+import 'package:animal_house/presintaions/screen/profile_screen.dart';
+import 'package:animal_house/presintaions/screen/search_screen.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
-import 'package:animal_house/presintaions/screen/choos_plan_screen.dart';
-import 'package:animal_house/presintaions/screen/dashboard_screen.dart';
+import 'package:animal_house/presintaions/screen/main_screen.dart';
 import 'package:provider/provider.dart';
 
 import 'firebase_options.dart';
 
-String SCREEN_CHOOSE = 'choose';
-String SCREEN_DASH = 'dash';
+String MAIN_SCREEN = 'main-screen';
 String LOGIN_SCREEN = 'login-screen';
 String SIGNUP_SCREEN = 'signup-screen';
 String AD_DETAILS_SCREEN = 'Ad-details-screen';
@@ -34,6 +34,8 @@ String ADD_NEW_PET_SCREEN = 'add-new-pet-screen';
 String CATEGORY_SCREEN = 'category-screen';
 String CHAT_SCREEN = 'chat-screen';
 String MESSAGE_SCREEN = 'message-screen';
+String PROFILE_SCREEN = 'profile-screen';
+String SEARCH_SCREEN = 'search-screen';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -88,16 +90,17 @@ class _MyAppState extends State<MyApp> {
         home: active ? const HomeScreen() : const LoginScreen(),
         routes: {
           HOME_SCREEN: (context) => const HomeScreen(),
-          SCREEN_CHOOSE: (context) => const ChoosPlanScreen(),
-          SCREEN_DASH: (context) => const ScreenDashboard(),
+          MAIN_SCREEN: (context) => const MainScreen(),
           LOGIN_SCREEN: (context) => const LoginScreen(),
           SIGNUP_SCREEN: (context) => const SignUpScreen(),
-          AD_DETAILS_SCREEN: (context) => const AdDetailsScreen(),
+          AD_DETAILS_SCREEN: (context) => const PostDetailsScreen(),
           FAVORITE_SCREEN: (context) => const FavoriteScreen(),
           ADD_NEW_PET_SCREEN: (context) => const AddNewPetScreen(),
           CATEGORY_SCREEN: (context) => const CategoryScreen(),
           CHAT_SCREEN: (context) => const ChatScreen(),
           MESSAGE_SCREEN: (context) => const MessageScreen(),
+          PROFILE_SCREEN: (context) => const ProfileScreen(),
+          SEARCH_SCREEN: (context) => const SearchScreen(),
         },
       ),
     );

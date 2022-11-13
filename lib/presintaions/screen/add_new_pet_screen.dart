@@ -25,11 +25,10 @@ class _AddNewPetScreenState extends State<AddNewPetScreen> {
   TextEditingController type = TextEditingController();
   TextEditingController price = TextEditingController();
 
-  String category = '';
+  //String category = '';
   int quantity = 0;
   int ageYears = 0;
   int ageMounth = 0;
-  // String gender = '';
   List<String> genderItems = ['male', 'female'];
   String genderValue = '';
   List<File> images = [];
@@ -59,11 +58,11 @@ class _AddNewPetScreenState extends State<AddNewPetScreen> {
         categoryItems.add(item.name);
       }
 
-      categoryValue = Provider.of<ProductProvider>(context, listen: false)
-          .categories[0]
-          .name;
+      //  Provider.of<ProductProvider>(context, listen: false)
+      //     .categories[0]
+      //     .name;
+      categoryValue = categoryItems[0];
     });
-
     super.initState();
   }
 
@@ -76,7 +75,7 @@ class _AddNewPetScreenState extends State<AddNewPetScreen> {
     type.dispose();
     images.clear();
     price.dispose();
-    category = '';
+
     quantity = 0;
     ageYears = 0;
     ageMounth = 0;
@@ -90,7 +89,7 @@ class _AddNewPetScreenState extends State<AddNewPetScreen> {
         id: '',
         userId:
             Provider.of<UserProvider>(context, listen: false).getUserModel.id,
-        category: category,
+        category: categoryValue,
         quantity: quantity.toString(),
         price: double.parse(price.text),
         ageYears: ageYears,
@@ -129,8 +128,8 @@ class _AddNewPetScreenState extends State<AddNewPetScreen> {
           Consumer<ProductProvider>(builder: (context, state, _) {
             return state.loading
                 ? SizedBox(
-                    height: Dimensions.height15,
-                    width: Dimensions.height30,
+                    height: Dimensions.height10,
+                    // width: Dimensions.w,
                     child: const CircularProgressIndicator())
                 : IconButton(
                     onPressed: uploadNewPet,

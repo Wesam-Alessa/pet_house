@@ -1,10 +1,12 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:animal_house/domain/entities/conversation/chat.dart';
-import 'package:animal_house/domain/entities/product.dart';
 import 'package:animal_house/domain/entities/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/cupertino.dart';
 
 class UserServices {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -58,12 +60,6 @@ class UserServices {
         exist = true;
       }
     }
-    // ChatModel myChat = ChatModel(
-    //     id: userID,
-    //     user: chatModel.user,
-    //     messages: chatModel.messages,
-    //     unReadCount: chatModel.unReadCount,
-    //     lastMessageAt: chatModel.lastMessageAt);
 
     if (exist) {
       await _fireStore
@@ -168,10 +164,33 @@ class UserServices {
   }
 
   Future<void> removeFromFavourites(
-      {required String userId, required String favItemId})async{
+      {required String userId, required String favItemId}) async {
     log(favItemId);
     await _fireStore.collection(ref).doc(userId).update({
       "favourites": FieldValue.arrayRemove([favItemId])
+    });
+  }
+
+  Future<void> updateUserName({
+    required String userId,
+    required String newName,
+  }) async {
+    await _fireStore.collection(ref).doc(userId).update({"name": newName});
+  }
+
+  Future<void> updateUserImage({
+    required String userId,
+    required File image,
+  }) async {
+    String url = '';
+    await FirebaseStorage.instance
+        .ref("users/$userId/profile/picture")
+        .putFile(image)
+        .then((value) {
+      value.ref.getDownloadURL().then((durl) async {
+        url = durl;
+        await _fireStore.collection(ref).doc(userId).update({"picture": url});
+      });
     });
   }
 }
