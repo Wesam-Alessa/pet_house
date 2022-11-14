@@ -185,12 +185,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             _formKey.currentState!.validate();
                           });
                           if (_formKey.currentState!.validate()) {
-                            state.signUp(
-                                context,
-                                nameController.text,
-                                emailController.text,
-                                passwordController.text,
-                                phoneController.text);
+                            state
+                                .signUp(
+                                    context,
+                                    nameController.text,
+                                    emailController.text,
+                                    passwordController.text,
+                                    phoneController.text)
+                                .then((value) {
+                              Navigator.pushReplacementNamed(
+                                context,HOME_SCREEN
+                              );
+                            });
                           }
                         },
                         style: ElevatedButton.styleFrom(
@@ -214,12 +220,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     child: GestureDetector(
                       onTap: () {
                         Navigator.pop(context);
-                    
                       },
                       child: Text("Already Have an Account? Sign in",
-                          style: TextStyles.bodyTextStyle
-                      
-                          ),
+                          style: TextStyles.bodyTextStyle),
                     ),
                   ),
                 ],

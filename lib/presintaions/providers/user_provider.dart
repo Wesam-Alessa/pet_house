@@ -124,6 +124,9 @@ class UserProvider with ChangeNotifier {
         name,
         phone,
       );
+      if (_userServices.user != null) {
+         _userModel = _userServices.user!;
+      }
       loading = false;
       notifyListeners();
       return true;

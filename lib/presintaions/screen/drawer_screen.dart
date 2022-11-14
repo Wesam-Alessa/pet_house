@@ -127,8 +127,10 @@ class _DrawerScreenState extends State<DrawerScreen> {
                 width: 10,
               ),
               TextButton(
-                onPressed: () {
-                  FirebaseAuth.instance.signOut();
+                onPressed: () async {
+                  await FirebaseAuth.instance.signOut().then((value) {
+                    Navigator.pushReplacementNamed(context, LOGIN_SCREEN);
+                  });
                 },
                 child: const Text(
                   'Log out',

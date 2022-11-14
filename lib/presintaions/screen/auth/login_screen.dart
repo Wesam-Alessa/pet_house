@@ -125,23 +125,23 @@ class _LoginScreenState extends State<LoginScreen> {
                   Consumer<UserProvider>(
                     builder: (context, state, _) {
                       return ElevatedButton(
-                        onPressed: () {
+                        onPressed: ()async {
                           setState(() {
                             _formKey.currentState!.validate();
                           });
                           if (_formKey.currentState!.validate()) {
-                            state.signIn(
+                           await state.signIn(
                               context,
                               emailController.text,
                               passwordController.text,
-                            );
-                            //     .then((value) {
-                            //   if (value) {
-                            //     Navigator.pushReplacementNamed(
-                            //       context,SCREEN_CHOOSE
-                            //     );
-                            //   }
-                            // });
+                            )
+                                .then((value) {
+                              if (value) {
+                                Navigator.pushReplacementNamed(
+                                  context,HOME_SCREEN
+                                );
+                              }
+                            });
                           }
                         },
                         style: ElevatedButton.styleFrom(
