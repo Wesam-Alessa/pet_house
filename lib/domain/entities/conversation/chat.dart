@@ -1,4 +1,3 @@
-import 'dart:convert';
 
 import 'package:animal_house/domain/entities/conversation/message.dart';
 import 'package:animal_house/domain/entities/user.dart';

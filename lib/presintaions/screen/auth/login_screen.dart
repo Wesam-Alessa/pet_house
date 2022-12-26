@@ -1,8 +1,8 @@
 import 'package:animal_house/core/constant/app_constant.dart';
 import 'package:animal_house/core/utills/dimensions.dart';
 import 'package:animal_house/main.dart';
-import 'package:animal_house/presintaions/common/hero_image.dart';
-import 'package:animal_house/presintaions/common/text_style.dart';
+import 'package:animal_house/presintaions/widgets/hero_image.dart';
+import 'package:animal_house/presintaions/widgets/text_style.dart';
 import 'package:animal_house/presintaions/providers/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -130,16 +130,16 @@ class _LoginScreenState extends State<LoginScreen> {
                             _formKey.currentState!.validate();
                           });
                           if (_formKey.currentState!.validate()) {
-                           await state.signIn(
+                            state.signIn(
                               context,
                               emailController.text,
                               passwordController.text,
                             )
                                 .then((value) {
                               if (value) {
-                                Navigator.pushReplacementNamed(
-                                  context,HOME_SCREEN
-                                );
+                                // Navigator.pushReplacementNamed(
+                                //   context,MY_APP_SCREEN
+                                // );
                               }
                             });
                           }

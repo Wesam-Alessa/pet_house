@@ -1,5 +1,5 @@
   import 'package:animal_house/core/utills/dimensions.dart';
-import 'package:animal_house/presintaions/common/text_style.dart';
+import 'package:animal_house/presintaions/widgets/text_style.dart';
  import 'package:flutter/material.dart';
 
 class SubscriptionContainer extends StatelessWidget {

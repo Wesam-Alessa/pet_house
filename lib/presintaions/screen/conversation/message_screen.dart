@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:animal_house/core/constant/color_constant.dart';
 import 'package:animal_house/domain/entities/conversation/chat.dart';
 import 'package:animal_house/domain/entities/conversation/message.dart';
-import 'package:animal_house/presintaions/common/conversation/message_widget.dart';
+import 'package:animal_house/presintaions/widgets/conversation/message_widget.dart';
 import 'package:animal_house/presintaions/providers/user_provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -107,7 +107,7 @@ class _MessageScreenState extends State<MessageScreen> with AnimationMixin {
             }
             if (snapshot.hasData) {
               if (snapshot.data!.data() != null) {
-                log("DATA := ${snapshot.data!.data()!.toString()}");
+               // log("DATA := ${snapshot.data!.data()!.toString()}");
                 chat = ChatModel.fromJson(snapshot.data!.data()!, chat.user);
               }
               return Stack(

@@ -1,8 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 // ignore_for_file: constant_identifier_names
 
-import 'package:animal_house/domain/entities/favourite.dart';
-import 'package:animal_house/domain/entities/product.dart';
+
 
 class UserModel {
   static const String NAME = 'name';

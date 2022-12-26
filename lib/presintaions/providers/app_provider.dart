@@ -1,14 +1,11 @@
-import 'dart:developer';
 
-import 'package:animal_house/data/product_service.dart';
 import 'package:animal_house/domain/entities/product.dart';
 import 'package:animal_house/presintaions/providers/product_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class AppProvider with ChangeNotifier {
-  // List<ProductModel> featureProducts = [];
-  final ProductsService _productsService = ProductsService();
+  //final ProductsService _productsService = ProductsService();
   bool loading = false;
   ProductModel? productModelDetails;
   String categoryName = '';

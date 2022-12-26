@@ -1,6 +1,6 @@
 import 'package:animal_house/core/utills/dimensions.dart';
 import 'package:animal_house/main.dart';
-import 'package:animal_house/presintaions/common/text_style.dart';
+import 'package:animal_house/presintaions/widgets/text_style.dart';
 import 'package:animal_house/presintaions/providers/user_provider.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -11,7 +11,7 @@ import 'package:provider/provider.dart';
 List<Map> drawerItems = [
   {
     'icon': FontAwesomeIcons.paw,
-    'title': 'Adoption',
+    'title': 'Back to Home',
     'onTap': HOME_SCREEN,
   },
   {
@@ -89,12 +89,21 @@ class _DrawerScreenState extends State<DrawerScreen> {
                       padding: const EdgeInsets.all(8.0),
                       child: InkWell(
                         onTap: () {
-                          if (element['title'] == 'Adoption') {
+                          if (element['title'] == 'Back to Home') {
                             Navigator.pushReplacementNamed(
                                 context, element["onTap"]);
-                          } else {
-                            Navigator.pushNamed(context, element["onTap"]);
-                          }
+                          } if (element['title'] == 'Add pet') {
+                            Navigator.pushNamed(
+                                context, element["onTap"]);
+                          } 
+                          if (element['title'] == 'Favorites') {
+                            Navigator.pushNamed(
+                                context, element["onTap"]);
+                          } 
+                          
+                          // else {
+                          //   Navigator.pushNamed(context, element["onTap"]);
+                          // }
                         },
                         child: Row(
                           children: [
@@ -129,7 +138,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
               TextButton(
                 onPressed: () async {
                   await FirebaseAuth.instance.signOut().then((value) {
-                    Navigator.pushReplacementNamed(context, LOGIN_SCREEN);
+                    Navigator.pushReplacementNamed(context, MY_APP_SCREEN);
                   });
                 },
                 child: const Text(

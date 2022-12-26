@@ -23,7 +23,7 @@ import 'package:animal_house/presintaions/screen/main_screen.dart';
 import 'package:provider/provider.dart';
 
 import 'firebase_options.dart';
-
+String MY_APP_SCREEN = 'my-app-screen';
 String MAIN_SCREEN = 'main-screen';
 String LOGIN_SCREEN = 'login-screen';
 String SIGNUP_SCREEN = 'signup-screen';
@@ -60,9 +60,9 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     FirebaseAuth.instance.authStateChanges().listen((User? user) {
       if (user == null) {
-        setState(() {
+        //setState(() {
           active = false;
-        });
+       // });
       } else {
         setState(() {
           active = true;
@@ -89,6 +89,7 @@ class _MyAppState extends State<MyApp> {
         ),
         home: active ? const HomeScreen() : const LoginScreen(),
         routes: {
+          MY_APP_SCREEN: (context) => const MyApp(),
           HOME_SCREEN: (context) => const HomeScreen(),
           MAIN_SCREEN: (context) => const MainScreen(),
           LOGIN_SCREEN: (context) => const LoginScreen(),

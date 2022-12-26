@@ -2,8 +2,8 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:animal_house/core/utills/dimensions.dart';
-import 'package:animal_house/presintaions/common/product_card_widget.dart';
-import 'package:animal_house/presintaions/common/text_style.dart';
+import 'package:animal_house/presintaions/widgets/product_card_widget.dart';
+import 'package:animal_house/presintaions/widgets/text_style.dart';
 import 'package:animal_house/presintaions/providers/product_provider.dart';
 import 'package:animal_house/presintaions/providers/user_provider.dart';
 import 'package:cached_network_image/cached_network_image.dart';

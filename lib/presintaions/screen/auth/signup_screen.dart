@@ -1,8 +1,8 @@
 import 'package:animal_house/core/constant/app_constant.dart';
 import 'package:animal_house/core/utills/dimensions.dart';
 import 'package:animal_house/main.dart';
-import 'package:animal_house/presintaions/common/hero_image.dart';
-import 'package:animal_house/presintaions/common/text_style.dart';
+import 'package:animal_house/presintaions/widgets/hero_image.dart';
+import 'package:animal_house/presintaions/widgets/text_style.dart';
 import 'package:animal_house/presintaions/providers/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -19,6 +19,7 @@ class SignUpScreen extends StatefulWidget {
 class _SignUpScreenState extends State<SignUpScreen> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  TextEditingController conPasswordController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
   TextEditingController nameController = TextEditingController();
 
@@ -50,7 +51,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     'Signup to manage your account.',
                     style: TextStyles.tageLineStyle,
                   ),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: 15),
                   Form(
                     key: _formKey,
                     child: Column(children: [
@@ -78,7 +79,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           return null;
                         },
                       ),
-                      const SizedBox(height: 24),
+                      const SizedBox(height: 15),
                       TextFormField(
                         controller: emailController,
                         style: const TextStyle(color: Colors.white),
@@ -108,38 +109,38 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           return null;
                         },
                       ),
-                      const SizedBox(height: 24),
+                      const SizedBox(height: 15),
                       TextFormField(
                         controller: passwordController,
                         style: const TextStyle(color: Colors.white),
                         cursorColor: Colors.white,
-                        decoration: InputDecoration(
-                          suffixIcon: IconButton(
-                            onPressed: () {
-                              setState(() {
-                                obscureText = !obscureText;
-                              });
-                            },
-                            icon: Icon(
-                              obscureText
-                                  ? Icons.remove_red_eye_outlined
-                                  : Icons.remove_red_eye,
-                              color: Colors.white,
-                            ),
-                          ),
-                          border: const OutlineInputBorder(),
+                        decoration: const InputDecoration(
+                          // suffixIcon: IconButton(
+                          //   onPressed: () {
+                          //     setState(() {
+                          //       obscureText = !obscureText;
+                          //     });
+                          //   },
+                          //   icon: Icon(
+                          //     obscureText
+                          //         ? Icons.remove_red_eye_outlined
+                          //         : Icons.remove_red_eye,
+                          //     color: Colors.white,
+                          //   ),
+                          // ),
+                          border: OutlineInputBorder(),
                           labelText: 'Password',
-                          labelStyle: const TextStyle(color: Colors.white),
-                          focusedBorder: const OutlineInputBorder(
+                          labelStyle: TextStyle(color: Colors.white),
+                          focusedBorder: OutlineInputBorder(
                             borderSide:
                                 BorderSide(width: 1.5, color: Colors.white),
                           ),
-                          enabledBorder: const OutlineInputBorder(
+                          enabledBorder: OutlineInputBorder(
                             borderSide:
                                 BorderSide(width: 1.5, color: Colors.white),
                           ),
                         ),
-                        obscureText: obscureText,
+                        //obscureText: obscureText,
                         validator: (String? value) {
                           if (value!.isEmpty || value.length < 6) {
                             return "invalid password";
@@ -147,7 +148,46 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           return null;
                         },
                       ),
-                      const SizedBox(height: 24),
+                      const SizedBox(height: 15),
+                      TextFormField(
+                        controller: conPasswordController,
+                        style: const TextStyle(color: Colors.white),
+                        cursorColor: Colors.white,
+                        decoration: const InputDecoration(
+                          // suffixIcon: IconButton(
+                          //   onPressed: () {
+                          //     setState(() {
+                          //       obscureText = !obscureText;
+                          //     });
+                          //   },
+                          //   icon: Icon(
+                          //     obscureText
+                          //         ? Icons.remove_red_eye_outlined
+                          //         : Icons.remove_red_eye,
+                          //     color: Colors.white,
+                          //   ),
+                          // ),
+                          border: OutlineInputBorder(),
+                          labelText: 'Confirm Password',
+                          labelStyle: TextStyle(color: Colors.white),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide:
+                                BorderSide(width: 1.5, color: Colors.white),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide:
+                                BorderSide(width: 1.5, color: Colors.white),
+                          ),
+                        ),
+                        //obscureText: obscureText,
+                        validator: (String? value) {
+                          if (value != passwordController.text) {
+                            return "invalid confirm password";
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 15),
                       TextFormField(
                         controller: phoneController,
                         keyboardType: TextInputType.number,
@@ -176,7 +216,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       ),
                     ]),
                   ),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: 15),
                   Consumer<UserProvider>(
                     builder: (context, state, _) {
                       return ElevatedButton(
@@ -194,8 +234,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                     phoneController.text)
                                 .then((value) {
                               Navigator.pushReplacementNamed(
-                                context,HOME_SCREEN
-                              );
+                                  context, MY_APP_SCREEN);
                             });
                           }
                         },

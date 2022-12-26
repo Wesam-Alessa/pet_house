@@ -20,7 +20,6 @@ class _ChatWidgetState extends State<ChatWidget> {
       onTap: () {
         var chat = widget.chat.copy();
         chat.messages = chat.messages.reversed.toList();
-        
         Navigator.pushNamed(context, MESSAGE_SCREEN, arguments: chat);
       },
       leading: CircleAvatar(
@@ -37,7 +36,7 @@ class _ChatWidgetState extends State<ChatWidget> {
       subtitle: Padding(
         padding: const EdgeInsets.only(top: 8.0),
         child: Text(
-          widget.chat.messages.last.text!,
+          widget.chat.messages.first.text!,
           style: theme.textTheme.bodyText2
               ?.copyWith(color: Colors.blueGrey.shade400),
         ),

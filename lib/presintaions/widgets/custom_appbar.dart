@@ -1,5 +1,4 @@
-import 'package:animal_house/core/constant/strings.dart';
-import 'package:animal_house/presintaions/common/text_style.dart';
+import 'package:animal_house/presintaions/widgets/text_style.dart';
 import 'package:flutter/material.dart';
 
 class CustomAppBar extends StatelessWidget {

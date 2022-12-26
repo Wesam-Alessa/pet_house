@@ -2,8 +2,8 @@ import 'dart:io';
 
 import 'package:animal_house/core/utills/dimensions.dart';
 import 'package:animal_house/domain/entities/product.dart';
-import 'package:animal_house/presintaions/common/text_form_feild.dart';
-import 'package:animal_house/presintaions/common/text_style.dart';
+import 'package:animal_house/presintaions/widgets/text_form_feild.dart';
+import 'package:animal_house/presintaions/widgets/text_style.dart';
 import 'package:animal_house/presintaions/providers/product_provider.dart';
 import 'package:animal_house/presintaions/providers/user_provider.dart';
 import 'package:flutter/material.dart';
@@ -25,7 +25,6 @@ class _AddNewPetScreenState extends State<AddNewPetScreen> {
   TextEditingController type = TextEditingController();
   TextEditingController price = TextEditingController();
 
-  //String category = '';
   int quantity = 0;
   int ageYears = 0;
   int ageMounth = 0;
@@ -50,24 +49,27 @@ class _AddNewPetScreenState extends State<AddNewPetScreen> {
   @override
   void initState() {
     genderValue = genderItems[0];
-    Provider.of<ProductProvider>(context, listen: false)
+    getCategories();
+    super.initState();
+  }
+
+  void getCategories() async {
+    await Provider.of<ProductProvider>(context, listen: false)
         .getCategories(context)
         .then((value) {
       for (var item
           in Provider.of<ProductProvider>(context, listen: false).categories) {
         categoryItems.add(item.name);
       }
-
-      //  Provider.of<ProductProvider>(context, listen: false)
-      //     .categories[0]
-      //     .name;
       categoryValue = categoryItems[0];
+      setState(() {});
     });
-    super.initState();
   }
 
   @override
   void dispose() {
+    categoryItems.clear();
+    categoryValue = '';
     name.dispose();
     description.dispose();
     contact.dispose();
@@ -75,7 +77,6 @@ class _AddNewPetScreenState extends State<AddNewPetScreen> {
     type.dispose();
     images.clear();
     price.dispose();
-
     quantity = 0;
     ageYears = 0;
     ageMounth = 0;
@@ -110,13 +111,17 @@ class _AddNewPetScreenState extends State<AddNewPetScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        leading: IconButton(
-          onPressed: () => Navigator.pop(context),
-          icon: const Icon(
-            Icons.arrow_back_ios,
-            color: Colors.black,
-          ),
-        ),
+        leading: Consumer<ProductProvider>(builder: (context, state, _) {
+          return state.loading
+              ? const SizedBox()
+              : IconButton(
+                  onPressed: () => Navigator.pop(context),
+                  icon: const Icon(
+                    Icons.arrow_back_ios,
+                    color: Colors.black,
+                  ),
+                );
+        }),
         backgroundColor: Colors.white,
         elevation: 0.0,
         centerTitle: true,
@@ -128,9 +133,8 @@ class _AddNewPetScreenState extends State<AddNewPetScreen> {
           Consumer<ProductProvider>(builder: (context, state, _) {
             return state.loading
                 ? SizedBox(
-                    height: Dimensions.height10,
-                    // width: Dimensions.w,
-                    child: const CircularProgressIndicator())
+                    width: Dimensions.height20 * 2,
+                    child: const Center(child: CircularProgressIndicator()))
                 : IconButton(
                     onPressed: uploadNewPet,
                     icon: const Icon(
@@ -211,38 +215,33 @@ class _AddNewPetScreenState extends State<AddNewPetScreen> {
               TextFormFieldWidget(
                   title: 'Price', controller: price, number: true),
               const SizedBox(height: 10),
-              Consumer<ProductProvider>(
-                builder: (context, state, _) {
-                  return state.categories.isNotEmpty
-                      ? Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(Dimensions.radius10 / 2),
-                            ),
-                            border: Border.all(width: 2, color: Colors.grey),
-                          ),
-                          padding: const EdgeInsets.symmetric(horizontal: 5),
-                          child: DropdownButton(
-                            underline: Container(),
-                            isExpanded: true,
-                            value: categoryValue,
-                            icon: const Icon(Icons.keyboard_arrow_down),
-                            items: categoryItems.map((String items) {
-                              return DropdownMenuItem(
-                                value: items,
-                                child: Text(items),
-                              );
-                            }).toList(),
-                            onChanged: (String? newValue) {
-                              setState(() {
-                                categoryValue = newValue!;
-                              });
-                            },
-                          ),
-                        )
-                      : Container();
-                },
-              ),
+              if (categoryItems.isNotEmpty)
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(Dimensions.radius10 / 2),
+                    ),
+                    border: Border.all(width: 2, color: Colors.grey),
+                  ),
+                  padding: const EdgeInsets.symmetric(horizontal: 5),
+                  child: DropdownButton(
+                    underline: Container(),
+                    isExpanded: true,
+                    value: categoryValue,
+                    icon: const Icon(Icons.keyboard_arrow_down),
+                    items: categoryItems.map((String items) {
+                      return DropdownMenuItem(
+                        value: items,
+                        child: Text(items),
+                      );
+                    }).toList(),
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        categoryValue = newValue!;
+                      });
+                    },
+                  ),
+                ),
               const SizedBox(height: 10),
               Container(
                 decoration: BoxDecoration(

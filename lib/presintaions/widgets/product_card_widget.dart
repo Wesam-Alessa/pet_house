@@ -1,9 +1,8 @@
 import 'package:animal_house/domain/entities/product.dart';
-import 'package:animal_house/presintaions/common/cached_network_image.dart';
-import 'package:animal_house/presintaions/common/text_style.dart';
+import 'package:animal_house/presintaions/widgets/cached_network_image.dart';
+import 'package:animal_house/presintaions/widgets/text_style.dart';
 import 'package:animal_house/presintaions/providers/app_provider.dart';
 import 'package:animal_house/presintaions/screen/post_details_screen.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -48,7 +47,10 @@ class ProductCardWidget extends StatelessWidget {
                   borderRadius: BorderRadius.circular(20),
                   boxShadow: shadowList,
                 ),
-                child: CachedImage(imageUrl: product.pictures[0]),
+                child:product.pictures.isNotEmpty?
+                 CachedImage(imageUrl: product.pictures[0]):
+                 Container()
+                 ,
               ),
             ),
             Expanded(

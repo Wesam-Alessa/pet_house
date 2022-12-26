@@ -1,5 +1,3 @@
-import 'package:animal_house/presintaions/providers/product_provider.dart';
-import 'package:animal_house/presintaions/providers/user_provider.dart';
 import 'package:animal_house/presintaions/screen/drawer_screen.dart';
 import 'package:animal_house/presintaions/screen/main_screen.dart';
 import 'package:flutter/material.dart';

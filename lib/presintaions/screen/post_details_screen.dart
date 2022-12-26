@@ -1,9 +1,8 @@
-import 'dart:developer';
 
 import 'package:animal_house/core/utills/dimensions.dart';
 import 'package:animal_house/main.dart';
-import 'package:animal_house/presintaions/common/cached_network_image.dart';
-import 'package:animal_house/presintaions/common/text_style.dart';
+import 'package:animal_house/presintaions/widgets/cached_network_image.dart';
+import 'package:animal_house/presintaions/widgets/text_style.dart';
 import 'package:animal_house/presintaions/providers/app_provider.dart';
 import 'package:animal_house/presintaions/providers/user_provider.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -125,25 +124,25 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
                                                             .getUserModel.id)
                                                       GestureDetector(
                                                         onTap: () {
-                                                          var chat = Provider
-                                                                  .of<UserProvider>(
-                                                                      context,
-                                                                      listen:
-                                                                          false)
-                                                              .existChat(
-                                                                  frindId:
-                                                                      userProvider
-                                                                          .userProduct!
-                                                                          .id);
+                                                          // var chat = Provider
+                                                          //         .of<UserProvider>(
+                                                          //             context,
+                                                          //             listen:
+                                                          //                 false)
+                                                          //     .existChat(
+                                                          //         frindId:
+                                                          //             userProvider
+                                                          //                 .userProduct!
+                                                          //                 .id);
 
-                                                          chat.messages = chat
-                                                              .messages.reversed
-                                                              .toList();
+                                                          // chat.messages = chat
+                                                          //     .messages.reversed
+                                                          //     .toList();
 
-                                                          Navigator.pushNamed(
-                                                              context,
-                                                              MESSAGE_SCREEN,
-                                                              arguments: chat);
+                                                          // Navigator.pushNamed(
+                                                          //     context,
+                                                          //     MESSAGE_SCREEN,
+                                                          //     arguments: chat);
                                                         },
                                                         child: Icon(
                                                           Icons.chat,

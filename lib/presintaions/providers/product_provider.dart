@@ -4,6 +4,7 @@ import 'package:animal_house/core/error/show_custom_snackbar.dart';
 import 'package:animal_house/data/product_service.dart';
 import 'package:animal_house/domain/entities/category.dart';
 import 'package:animal_house/domain/entities/product.dart';
+import 'package:animal_house/main.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -41,21 +42,16 @@ class ProductProvider with ChangeNotifier {
     return myProducts;
   }
 
-   
-
   Future<void> getCategories(context) async {
     categories = await _productServices.getCategories(context: context);
     notifyListeners();
   }
 
   Future<void> search({required String productName}) async {
-    
     productsSearched =
         _productServices.searchProducts(productName: productName);
     notifyListeners();
   }
-
- 
 
   Future<List<String>> uploadFiles(List<File> images, String userId) async {
     var imageUrls =
@@ -104,6 +100,7 @@ class ProductProvider with ChangeNotifier {
           }).then((value) {
             ScaffoldMessenger.of(context).showSnackBar(
                 MySnackBars.successSnackBar("upload successfully "));
+            Navigator.pushReplacementNamed(context, MY_APP_SCREEN);
           }).catchError((onError) {
             products.remove(product);
           });
@@ -129,7 +126,7 @@ class ProductProvider with ChangeNotifier {
         myProducts.remove(myProducts.firstWhere(
           (element) => element.id == postID,
         ));
-        
+
         loadProducts(context: context);
       }
     });

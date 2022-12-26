@@ -1,8 +1,8 @@
 import 'package:animal_house/core/utills/dimensions.dart';
 import 'package:animal_house/domain/entities/category.dart';
 import 'package:animal_house/main.dart';
-import 'package:animal_house/presintaions/common/product_card_widget.dart';
-import 'package:animal_house/presintaions/common/text_style.dart';
+import 'package:animal_house/presintaions/widgets/product_card_widget.dart';
+import 'package:animal_house/presintaions/widgets/text_style.dart';
 import 'package:animal_house/presintaions/providers/app_provider.dart';
 import 'package:animal_house/presintaions/providers/product_provider.dart';
 import 'package:animal_house/presintaions/providers/user_provider.dart';
@@ -55,7 +55,10 @@ class _MainScreenState extends State<MainScreen> {
           onRefresh: () {
             Provider.of<ProductProvider>(context, listen: false)
                 .loadProducts(context: context);
-            return Future<void>.delayed(const Duration(seconds: 3));
+            return Future<void>.delayed(
+              const Duration(seconds: 3),
+              () => Navigator.pushReplacementNamed(context, MY_APP_SCREEN),
+            );
           },
           child: Scaffold(
             body: SafeArea(
@@ -112,7 +115,8 @@ class _MainScreenState extends State<MainScreen> {
                     ),
                   ),
                   GestureDetector(
-                    onTap: () => Navigator.pushNamed(context, SEARCH_SCREEN),
+                    onTap: () {},
+                    //=> Navigator.pushNamed(context, SEARCH_SCREEN),
                     child: Container(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 20, vertical: 15),
